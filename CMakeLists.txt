@@ -74,3 +74,7 @@ if (WIN32)
 endif()
 
 add_executable(PacketGen ${NGCP_GLOB})
+
+
+set_property(TARGET PacketGen PROPERTY CXX_STANDARD 11)
+set_property(TARGET PacketGen PROPERTY CXX_STANDARD_REQUIRED 11)
