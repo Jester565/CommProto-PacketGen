@@ -74,7 +74,10 @@ bool Parser::parse(const std::string& path)
 								inComment = false;
 						}
 				}
-				fileContents.push_back(c);
+				if (c != '\r')
+				{
+					fileContents.push_back(c);
+				}
 		}
 		fileContents.push_back(' ');
 		inQuote = false;
@@ -188,7 +191,7 @@ bool Parser::convertTypes(TypeMap * typeMap)
 
 bool Parser::writeMessage(Message* msg, std::string msgOutPath, const std::string& templatePath, const std::string& fileEnding)
 {
-		msgOutPath += "\\";
+		msgOutPath += "/";
 		msgOutPath += msg->getName();
 		msgOutPath += ".";
 		msgOutPath += fileEnding;

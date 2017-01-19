@@ -52,6 +52,13 @@ Runner::~Runner()
 bool Runner::checkArguments()
 {
 		msgInPath = *cmdArgManager->getValue("I");
+		for (int i = 0; i < msgInPath.size(); i++)
+			{
+				if (msgInPath.at(i) == '\\')
+					{
+						msgInPath.at(i) = '/';
+					}
+			}
 		if (!FileManager::IsFile(msgInPath))
 		{
 				std::cerr << "Input path does not exist" << std::endl;
@@ -80,12 +87,12 @@ bool Runner::checkArguments()
 		{
 				for (int i = 0; i < msgOutPath.size(); i++)
 				{
-						if (msgOutPath.at(i) == '/')
+						if (msgOutPath.at(i) == '\\')
 						{
-								msgOutPath.at(i) = '\\';
+								msgOutPath.at(i) = '/';
 						}
 				}
-				if (msgOutPath.back() == '\\')
+				if (msgOutPath.back() == '/')
 				{
 						msgOutPath.pop_back();
 				}
