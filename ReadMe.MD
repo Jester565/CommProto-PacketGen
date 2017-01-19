@@ -9,8 +9,8 @@ Converts simple message files to C++ or C# code for packets.
  -I is the path to your input file (required)<br/>
  -O is the path to the directory you want your output files in (defaults to current directory)<br/>
  -L is the language (defaults to cpp)<br/>
-   L=cpp is c++<br/>
-   L=cs  is c#<br/>
+ -L=cpp is c++<br/>
+ -L=cs  is c#<br/>
  -E is the file extension (defaults to .h on cpp and .cs on c#)<br/>
 
 Example:
