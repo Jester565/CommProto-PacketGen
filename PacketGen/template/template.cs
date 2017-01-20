@@ -34,11 +34,6 @@ namespace NGCP
   {
     ^Constructor^
 
-    public override ABSPacket Create()
-    {
-      return new ^Name^();
-    }
-
     public override void Pack(ObjectStream obj)
     {
       ^PackBody^
@@ -47,6 +42,11 @@ namespace NGCP
     public override void Unpack(ObjectStream obj)
     {
       ^UnpackBody^
+    }
+	
+    public override ABSPacket Create()
+    {
+      return new ^CreateConstruct^;
     }
 
     #region Data

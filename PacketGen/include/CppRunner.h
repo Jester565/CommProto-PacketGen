@@ -30,7 +30,7 @@ public:
 				int noDefaultArgI = 0;
 				for (int i = 0; i < orderedFields.size(); i++)
 				{
-						if (orderedFields.at(i)->defaultArg == nullptr)
+						if (orderedFields.at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
 						{
 								Field* temp = orderedFields.at(i);
 								orderedFields.at(i) = orderedFields.at(noDefaultArgI);
@@ -41,7 +41,7 @@ public:
 				for (int i = 0; i < orderedFields.size(); i++)
 				{
 						fileOut << orderedFields.at(i)->type->name << " " << *orderedFields.at(i)->name;
-						if (orderedFields.at(i)->defaultArg != nullptr)
+						if (orderedFields.at(i)->assignmentMode == Field::ASSIGN_MODE_SET_DEFAULT)
 						{
 								fileOut << " = ";
 								fileOut << *orderedFields.at(i)->defaultArg;

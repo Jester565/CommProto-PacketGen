@@ -20,17 +20,18 @@ bool CsRunner::checkArguments()
 
 bool CsRunner::linkFields()
 {
-		typeMap->addType("uint8", "Byte", 1);
-		typeMap->addType("uint16", "UInt16", 2);
-		typeMap->addType("uint32", "UInt32", 4);
-		typeMap->addType("uint64", "UInt64", 8);
-		typeMap->addType("int8", "SByte", 1);
-		typeMap->addType("int16", "Int16", 2);
-		typeMap->addType("int32", "Int32", 4);
-		typeMap->addType("int64", "Int64", 8);
-		typeMap->addType("float", "Single", 4);
-		typeMap->addType("double", "Double", 8);
-		typeMap->addType("string", "String", 0);
+		Runner::linkFields();
+		typeMap->setLangTypeName(UINT8_PACKGEN_TYPE_NAME, "Byte");
+		typeMap->setLangTypeName(UINT16_PACKGEN_TYPE_NAME, "UInt16");
+		typeMap->setLangTypeName(UINT32_PACKGEN_TYPE_NAME, "UInt32");
+		typeMap->setLangTypeName(UINT64_PACKGEN_TYPE_NAME, "UInt64");
+		typeMap->setLangTypeName(INT8_PACKGEN_TYPE_NAME, "SByte");
+		typeMap->setLangTypeName(INT16_PACKGEN_TYPE_NAME, "Int16");
+		typeMap->setLangTypeName(INT32_PACKGEN_TYPE_NAME, "Int32");
+		typeMap->setLangTypeName(INT64_PACKGEN_TYPE_NAME, "Int64");
+		typeMap->setLangTypeName(FLOAT_PACKGEN_TYPE_NAME, "Single");
+		typeMap->setLangTypeName(DOUBLE_PACKGEN_TYPE_NAME, "Double");
+		typeMap->setLangTypeName(STRING_PACKGEN_TYPE_NAME, "String");
 		return true;
 }
 

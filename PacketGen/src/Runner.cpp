@@ -3,7 +3,6 @@
 #include <functional>
 #include <iostream>
 
-
 Runner::Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr)
 		:cmdArgManager(cmdArgManager), templatePath(templatePathStr)
 {
@@ -115,6 +114,22 @@ bool Runner::parse()
 		return true;
 }
 
+bool Runner::linkFields()
+{
+		typeMap->addType(UINT8_PACKGEN_TYPE_NAME, 1, "0");
+		typeMap->addType(UINT16_PACKGEN_TYPE_NAME, 2, "0");
+		typeMap->addType(UINT32_PACKGEN_TYPE_NAME, 4, "0");
+		typeMap->addType(UINT64_PACKGEN_TYPE_NAME, 8, "0");
+		typeMap->addType(INT8_PACKGEN_TYPE_NAME, 1, "0");
+		typeMap->addType(INT16_PACKGEN_TYPE_NAME, 2, "0");
+		typeMap->addType(INT32_PACKGEN_TYPE_NAME, 4, "0");
+		typeMap->addType(INT64_PACKGEN_TYPE_NAME, 8, "0");
+		typeMap->addType(FLOAT_PACKGEN_TYPE_NAME, 4, "0");
+		typeMap->addType(DOUBLE_PACKGEN_TYPE_NAME, 8, "0");
+		typeMap->addType(STRING_PACKGEN_TYPE_NAME, 0, "\"\"");
+		return true;
+}
+
 bool Runner::convertFields()
 {
 		if (!parser->convertTypes(typeMap))
@@ -129,6 +144,7 @@ bool Runner::linkStatements()
 {
 		parser->addStatement("MsgComment", std::bind(&Runner::HandleMsgComment, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		parser->addStatement("Name", std::bind(&Runner::HandleName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		parser->addStatement("CreateConstruct", std::bind(&Runner::HandleCreateConstruct, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		return true;
 }
 

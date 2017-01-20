@@ -9,14 +9,24 @@ struct Type
 		{
 
 		}
+		Type(const std::string& name, int numBytes, const std::string& defaultValue)
+				:name(name), numBytes(numBytes), defaultVal(defaultValue)
+		{
+
+		}
 		std::string name;
 		uint8_t numBytes;
+		std::string defaultVal;
 };
 
 struct Field
 {
+		static const int ASSIGN_MODE_NONE = 0;
+		static const int ASSIGN_MODE_SET_DEFAULT = 1;
+		static const int ASSIGN_MODE_CREATE_CONSTRUCT = 2;
+
 		Field()
-				:type(nullptr), name(nullptr), defaultArg(nullptr), comment(nullptr), expectingDefaultArg(false)
+				:type(nullptr), name(nullptr), defaultArg(nullptr), comment(nullptr), assignmentMode(ASSIGN_MODE_NONE)
 		{
 				
 		}
@@ -25,7 +35,7 @@ struct Field
 		std::string* name;
 		std::string* comment;
 		std::string* defaultArg;
-		bool expectingDefaultArg;
+		int assignmentMode;
 
 		~Field()
 		{

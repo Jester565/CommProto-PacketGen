@@ -7,6 +7,18 @@
 
 static const int TAB_SPACE = 2;
 
+const std::string UINT8_PACKGEN_TYPE_NAME = "uint8";
+const std::string UINT16_PACKGEN_TYPE_NAME = "uint16";
+const std::string UINT32_PACKGEN_TYPE_NAME = "uint32";
+const std::string UINT64_PACKGEN_TYPE_NAME = "uint64";
+const std::string INT8_PACKGEN_TYPE_NAME = "int8";
+const std::string INT16_PACKGEN_TYPE_NAME = "int16";
+const std::string INT32_PACKGEN_TYPE_NAME = "int32";
+const std::string INT64_PACKGEN_TYPE_NAME = "int64";
+const std::string FLOAT_PACKGEN_TYPE_NAME = "float";
+const std::string DOUBLE_PACKGEN_TYPE_NAME = "double";
+const std::string STRING_PACKGEN_TYPE_NAME = "string";
+
 class Runner
 {
 public:
@@ -71,6 +83,36 @@ public:
 				}
 		}
 
+		void HandleCreateConstruct(Message* msg, std::ofstream& fileOut, int space)
+		{
+				fileOut << msg->getName();
+				fileOut << "(";
+				bool first = true;
+				for (int i = 0; i < msg->getFields().size(); i++)
+				{
+						if (msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
+						{
+								if (!first)
+								{
+										fileOut << ", ";
+								}
+								else
+								{
+										first = false;
+								}
+								if (msg->getFields().at(i)->assignmentMode == Field::ASSIGN_MODE_CREATE_CONSTRUCT)
+								{
+										fileOut << *msg->getFields().at(i)->defaultArg;
+								}
+								else
+								{
+										fileOut << msg->getFields().at(i)->type->defaultVal;
+								}
+						}
+				}
+				fileOut << ")";
+		}
+
 		void HandleName(Message* msg, std::ofstream& fileOut, int space)
 		{
 				fileOut << msg->getName();
@@ -85,7 +127,7 @@ public:
 protected:
 		virtual bool checkArguments();
 		virtual bool parse();
-		virtual bool linkFields() = 0;
+		virtual bool linkFields();
 		virtual bool convertFields();
 		virtual bool linkStatements();
 		virtual bool write();

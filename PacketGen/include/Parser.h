@@ -4,12 +4,17 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <vector>
 
 typedef std::function<void(Message*, std::ofstream&, int)> StatementFunction;
 
 class Parser
 {
 public:
+		const static std::vector <char> SEPARATE_WORD_CHARS;
+
+		const static std::vector <char> IGNORE_CHARS;
+
 		Parser();
 
 		bool parse(const std::string& path);

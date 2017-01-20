@@ -61,4 +61,5 @@ int main(int argc, char *argv[])
 		{
 				std::cout << "Failure" << std::endl;
 		}
+		system("pause");
 }

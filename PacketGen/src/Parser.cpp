@@ -2,6 +2,9 @@
 #include <iostream>
 #include <fstream>
 
+const std::vector <char> Parser::SEPARATE_WORD_CHARS({ '{', '}', '=', ';' });
+const std::vector <char> Parser::IGNORE_CHARS({ '\r', '\t' });
+
 Parser::Parser()
 		:activeMessage(nullptr), activeField(nullptr)
 {
@@ -21,9 +24,12 @@ bool Parser::parse(const std::string& path)
 		for (int i = 0; i < content.size(); i++)
 		{
 				char c = content.at(i);
-				if (c == '\t')
+				for (int i = 0; i < IGNORE_CHARS.size(); i++)
 				{
-						c = ' ';
+						if (c == IGNORE_CHARS.at(i))
+						{
+								c = ' ';
+						}
 				}
 				if (!inQuote && !inComment)
 				{
@@ -48,16 +54,19 @@ bool Parser::parse(const std::string& path)
 								inComment = true;
 								endChar = '/';
 						}
-						if (c == '{' || c == '}' || c == ';' || c == '=')
+						for (int i = 0; i < SEPARATE_WORD_CHARS.size(); i++)
 						{
-								if (fileContents.back() != ' ' || fileContents.back() != '\n')
+								if (c == SEPARATE_WORD_CHARS.at(i))
+								{
+										if (fileContents.back() != ' ' || fileContents.back() != '\n')
+										{
+												fileContents.push_back(' ');
+										}
+								}
+								if (fileContents.back() == SEPARATE_WORD_CHARS.at(i))
 								{
 										fileContents.push_back(' ');
 								}
-						}
-						if ((c != ' ' || c != '\n') && (fileContents.back() == '{' || fileContents.back() == ';' || fileContents.back() == '}' || fileContents.back() == '='))
-						{
-								fileContents.push_back(' ');
 						}
 				}
 				else if (inQuote)
@@ -74,10 +83,7 @@ bool Parser::parse(const std::string& path)
 								inComment = false;
 						}
 				}
-				if (c != '\r')
-				{
-					fileContents.push_back(c);
-				}
+			 fileContents.push_back(c);
 		}
 		fileContents.push_back(' ');
 		inQuote = false;
@@ -312,17 +318,21 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				{
 						activeField->name = new std::string(word);
 				}
-				else if (word == "=")
+				else if (word == "=" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
 				{
-						activeField->expectingDefaultArg = true;
+						activeField->assignmentMode = Field::ASSIGN_MODE_SET_DEFAULT;
 				}
-				else if (activeField->expectingDefaultArg)
+				else if (word == "~" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
+				{
+						activeField->assignmentMode = Field::ASSIGN_MODE_CREATE_CONSTRUCT;
+				}
+				else if (activeField->assignmentMode != Field::ASSIGN_MODE_NONE)
 				{
 						if (word == ";")
 						{
 								if (activeField->defaultArg == nullptr)
 								{
-										std::cerr << "No default argument was put after =" << std::endl;;
+										std::cerr << "No default argument was put after = or ~" << std::endl;;
 										return false;
 								}
 								activeMessage->addField(activeField);
@@ -348,7 +358,7 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				}
 				else
 				{
-						std::cerr << "Was expecting = or ;" << std::endl;
+						std::cerr << "Was expecting = or ~ or ;" << std::endl;
 						return false;
 				}
 		}

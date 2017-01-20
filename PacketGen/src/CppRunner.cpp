@@ -20,17 +20,18 @@ bool CppRunner::checkArguments()
 
 bool CppRunner::linkFields()
 {
-		typeMap->addType("uint8", "uint8_t", 1);
-		typeMap->addType("uint16", "uint16_t", 2);
-		typeMap->addType("uint32", "uint32_t", 4);
-		typeMap->addType("uint64", "uint64_t", 8);
-		typeMap->addType("int8", "int8_t", 1);
-		typeMap->addType("int16", "int16_t", 2);
-		typeMap->addType("int32", "int32_t", 4);
-		typeMap->addType("int64", "int64_t", 8);
-		typeMap->addType("float", "real32_t", 4);
-		typeMap->addType("double", "real64_t", 8);
-		typeMap->addType("string", "std::string", 0);
+		Runner::linkFields();
+		typeMap->setLangTypeName(UINT8_PACKGEN_TYPE_NAME, "uint8_t");
+		typeMap->setLangTypeName(UINT16_PACKGEN_TYPE_NAME, "uint16_t");
+		typeMap->setLangTypeName(UINT32_PACKGEN_TYPE_NAME, "uint32_t");
+		typeMap->setLangTypeName(UINT64_PACKGEN_TYPE_NAME, "uint64_t");
+		typeMap->setLangTypeName(INT8_PACKGEN_TYPE_NAME, "int8_t");
+		typeMap->setLangTypeName(INT16_PACKGEN_TYPE_NAME, "int16_t");
+		typeMap->setLangTypeName(INT32_PACKGEN_TYPE_NAME, "int32_t");
+		typeMap->setLangTypeName(INT64_PACKGEN_TYPE_NAME, "int64_t");
+		typeMap->setLangTypeName(FLOAT_PACKGEN_TYPE_NAME, "real32_t");
+		typeMap->setLangTypeName(DOUBLE_PACKGEN_TYPE_NAME, "real64_t");
+		typeMap->setLangTypeName(STRING_PACKGEN_TYPE_NAME, "std::string");
 		return true;
 }
 
