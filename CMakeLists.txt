@@ -21,8 +21,9 @@ cmake_minimum_required( VERSION 2.6 )
 
 project( "PacketGen" )
 
-option(release "Compile the release version of PacketGen")
+option(release "Compile the release version of PacketGen" OFF)
 option(diag "Allows for generation of byte diagrams (requires allegro)" OFF)
+option(alleg "On mean that directory of allegro's lib files will be specified" OFF)
 
 if (release)
   set (CMAKE_BUILD_TYPE Release)
@@ -63,6 +64,12 @@ set(PACKETGEN_SOURCES
 	${SOURCE_DIR}/TypeMap.cpp)
 		
 if(diag)
+	set(alleg "-" CACHE STRING "The path to allegro's static library")
+	if ("-" STREQUAL alleg)
+
+  else()
+    
+	endif()
 	add_definitions(-DDIAGRAM)
 	set(PACKETGEN_HEADERS 
 		${PACKETGEN_HEADERS}
@@ -91,6 +98,21 @@ endif()
 
 add_executable(PacketGen ${NGCP_GLOB})
 
+if(diag)
+	if(alleg)
+	  set(allegdir "/usr/lib/x86_64-linux-gnu/" CACHE STRING "The directories of allegro's libraries")
+	  set(alleglib "liballegro.so" CACHE STRING "The path of the main allegro library relative to allegdir")
+	  set(ttflib "liballegro_ttf.so" CACHE STRING "The path of the ttf allegro extension relative to allegdir")
+	  set(imglib "liballegro_image.so" CACHE STRING "The path of the img allegro extension relative to allegdir")
+	  set(primlib "liballegro_primitives.so" CACHE STRING "The path of the primtive allegro extension relative to allegdir")
+	  set(fontlib "liballegro_font.so" CACHE STRING "The path of the font allegro extension relative to allegdir")
+		target_link_libraries(PacketGen ${allegdir}${alleglib})
+		target_link_libraries(PacketGen ${allegdir}${ttflib})
+		target_link_libraries(PacketGen ${allegdir}${imglib})
+		target_link_libraries(PacketGen ${allegdir}${primlib})
+		target_link_libraries(PacketGen ${allegdir}${fontlib})
+	endif()
+endif()
 
 set_property(TARGET PacketGen PROPERTY CXX_STANDARD 11)
 set_property(TARGET PacketGen PROPERTY CXX_STANDARD_REQUIRED 11)
