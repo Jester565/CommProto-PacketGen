@@ -4,13 +4,12 @@
 #include <string>
 #include <fstream>
 
-struct stat info;
-
 class FileManager
 {
 public:
 		static bool IsDirectory(const std::string& path)
 		{
+				struct stat info;
 				stat(path.c_str(), &info);
 				return (info.st_mode & S_IFDIR);
 		}

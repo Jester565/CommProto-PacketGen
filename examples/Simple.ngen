@@ -1,0 +1,34 @@
+//A message represents a single packet and will be generated into its own file (Dog and Cat will be generated to Dog.h and Cat.h)
+message Cat {
+	//This field will be a public data member of the generated code and will be packed and unpacked
+	int16 age;
+}
+
+message Goat {
+  //Set the default value of name to "Gabe the Goat" in the constructor
+  string name = "Gabe the Goat";
+  
+  //Set the default value of age to 0 in the constructor
+  uint8 age = 0;
+  
+  //Without a default value, the constructor will require that "speed" is specified. However, the Create() function will set speed to 0.
+  float speed;
+  
+  //Like speed but we specify the value accel will be set to in the Create() function.
+  double accel ~ 5;
+}
+
+
+
+//This comment will be placed at the top of the generated file
+message Dog {
+
+  //comments above fields will also be put into the generated file
+  int16 age;
+  
+  string name;  //a comment here doesn't apply to the field "name", but will be above the field "hungerLevel"
+  
+  int8 hungerLevel;
+}
+
+//Note that message Goat cannot be a byte diagram as string is variable length

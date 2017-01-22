@@ -7,7 +7,7 @@ public:
 		void HandleDefine(Message* msg, std::ofstream& fileOut, int space)
 		{
 				std::string defineStr = "NGCP";
-				for (int i = 0; i < msg->getName().size(); i++)
+				for (uint32_t i = 0; i < msg->getName().size(); i++)
 				{
 						if (isupper(msg->getName().at(i)))
 						{
@@ -16,7 +16,7 @@ public:
 						defineStr += toupper(msg->getName().at(i));
 				}
 				defineStr += "_";
-				for (int i = 0; i < fileEnding.size(); i++)
+				for (uint32_t i = 0; i < fileEnding.size(); i++)
 				{
 						defineStr += toupper(fileEnding.at(i));
 				}
@@ -28,7 +28,7 @@ public:
 				fileOut << msg->getName() << "(";
 				std::vector <Field*> orderedFields(msg->getFields());
 				int noDefaultArgI = 0;
-				for (int i = 0; i < orderedFields.size(); i++)
+				for (uint32_t i = 0; i < orderedFields.size(); i++)
 				{
 						if (orderedFields.at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
 						{
@@ -38,7 +38,7 @@ public:
 								noDefaultArgI++;
 						}
 				}
-				for (int i = 0; i < orderedFields.size(); i++)
+				for (uint32_t i = 0; i < orderedFields.size(); i++)
 				{
 						fileOut << orderedFields.at(i)->type->name << " " << *orderedFields.at(i)->name;
 						if (orderedFields.at(i)->assignmentMode == Field::ASSIGN_MODE_SET_DEFAULT)
@@ -59,7 +59,7 @@ public:
 				fileOut << ")";
 				if (orderedFields.size() > 0)
 				{
-						for (int i = 0; i < orderedFields.size(); i++)
+						for (uint32_t i = 0; i < orderedFields.size(); i++)
 						{
 								fileOut << ",";
 								Runner::NewLine(fileOut, space + TAB_SPACE);
@@ -74,7 +74,7 @@ public:
 
 		void HandlePackBody(Message* msg, std::ofstream& fileOut, int space)
 		{
-				for (int i = 0; i < msg->getFields().size(); i++)
+				for (uint32_t i = 0; i < msg->getFields().size(); i++)
 				{
 						fileOut << "obj << ";
 						fileOut << *msg->getFields().at(i)->name;
@@ -102,7 +102,7 @@ public:
 
 		void HandleData(Message* msg, std::ofstream& fileOut, int space)
 		{
-				for (int i = 0; i < msg->getFields().size(); i++)
+				for (uint32_t i = 0; i < msg->getFields().size(); i++)
 				{
 						if (msg->getFields().at(i)->comment != nullptr)
 						{
@@ -118,6 +118,8 @@ public:
 						}
 				}
 		}
+
+		static const std::string DEFAULT_FILE_ENDING;
 
 		static const std::string TEMPLATE_FILE_PATH;
 

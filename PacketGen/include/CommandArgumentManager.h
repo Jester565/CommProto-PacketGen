@@ -7,11 +7,13 @@ class CommandArgumentManager
 public:
 		CommandArgumentManager();
 
-		void addArgument(char* key, bool usesStr = true, char* defaultValue = nullptr);
+		void addArgument(char* key, const std::string& description, bool usesStr, char* defaultValue = nullptr);
 
 		bool readArgs(int numArgs, char* args[]);
 
 		std::string* getValue(char* key);
+
+		void printManual();
 
 		~CommandArgumentManager();
 

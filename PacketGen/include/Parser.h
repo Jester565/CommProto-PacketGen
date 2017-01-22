@@ -12,7 +12,6 @@ class Parser
 {
 public:
 		const static std::vector <char> SEPARATE_WORD_CHARS;
-
 		const static std::vector <char> IGNORE_CHARS;
 
 		Parser();
@@ -28,6 +27,8 @@ public:
 				statements.emplace(std::make_pair(key, statementHandler));
 		}
 
+		std::vector <Message*> messages;
+
 		~Parser();
 
 private:
@@ -37,13 +38,9 @@ private:
 
 		bool writeMessage(Message* msg, std::string msgInPath, const std::string& templatePath, const std::string& fileEnding);
 
-		Parser* parser;
-
 		Message* activeMessage;
 
 		Field* activeField;
-
-		std::vector <Message*> messages;
 
 		std::unordered_map <std::string, StatementFunction> statements;
 };

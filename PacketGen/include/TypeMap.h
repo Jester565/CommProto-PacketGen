@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 
-class Type;
+struct Type;
 
 class TypeMap
 {

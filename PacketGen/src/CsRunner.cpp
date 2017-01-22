@@ -2,6 +2,7 @@
 #include <functional>
 
 const std::string CsRunner::TEMPLATE_PATH = "./template.cs";
+const std::string CsRunner::DEFAULT_FILE_ENDING = "cs";
 
 CsRunner::CsRunner(CommandArgumentManager * cmdArgManager)
 		:Runner(cmdArgManager, TEMPLATE_PATH)
@@ -13,7 +14,7 @@ bool CsRunner::checkArguments()
 		fileEnding = (*cmdArgManager->getValue("E"));
 		if (fileEnding.empty())
 		{
-				fileEnding = "cs";
+				fileEnding = DEFAULT_FILE_ENDING;
 		}
 		return Runner::checkArguments();
 }

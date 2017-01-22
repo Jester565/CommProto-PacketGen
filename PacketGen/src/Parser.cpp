@@ -88,12 +88,13 @@ bool Parser::parse(const std::string& path)
 		fileContents.push_back(' ');
 		inQuote = false;
 		inComment = false;
+		int lineNum = 1;
 		std::string comment;
 		std::string word;
 		for (int i = 0; i < fileContents.size(); i++)
 		{
 				char c = fileContents.at(i);
-				
+
 				if (!inQuote && !inComment)
 				{
 						if (c == '\"' || c == '\'')
@@ -120,6 +121,7 @@ bool Parser::parse(const std::string& path)
 										{
 												if (!handleWord(word, comment))
 												{
+														std::cerr << "Line #" << lineNum << std::endl;
 														return false;
 												}
 												word.clear();
@@ -156,10 +158,14 @@ bool Parser::parse(const std::string& path)
 								comment += c;
 						}
 				}
+				if (c == '\n')
+				{
+						lineNum++;
+				}
 		}
 		if (activeMessage != nullptr)
 		{
-				std::cerr << "Message in file was not ended properly" << std::endl;
+				std::cerr << "Message \"" << activeMessage->getName() << "\" in file was not ended properly" << std::endl;
 				return false;
 		}
 		return true;
@@ -187,7 +193,7 @@ bool Parser::convertTypes(TypeMap * typeMap)
 						Type* typePtr = fields.at(j)->type;
 						if (!typeMap->convertType(typePtr))
 						{
-								std::cerr << typePtr->name << " did not match a type" << std::endl;
+								std::cerr << typePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" <<  std::endl;
 								return false;
 						}
 				}
@@ -364,6 +370,21 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 		}
 		else
 		{
+				if (activeField != nullptr)
+				{
+						std::cerr << "Field \"";
+						if (activeField->type != nullptr)
+						{
+								std::cerr << activeField->type->name;
+								std::cerr << " ";
+						}
+						if (activeField->name != nullptr)
+						{
+								std::cerr << activeField->name;
+						}
+						std::cerr << "\" in message \"" << activeMessage->getName() << "\" was not ended properly" << std::endl;
+						return false;
+				}
 				messages.push_back(activeMessage);
 				activeMessage = nullptr;
 		}
@@ -373,4 +394,19 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 
 Parser::~Parser()
 {
+		for (int i = 0; i < messages.size(); i++)
+		{
+				delete messages.at(i);
+		}
+		messages.clear();
+		if (activeMessage != nullptr)
+		{
+				delete activeMessage;
+				activeMessage = nullptr;
+		}
+		if (activeField != nullptr)
+		{
+				delete activeField;
+				activeField = nullptr;
+		}
 }

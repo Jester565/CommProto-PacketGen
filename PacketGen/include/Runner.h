@@ -50,7 +50,7 @@ public:
 		void HandlePureComment(const std::string& comment, std::ofstream& fileOut, int space)
 		{
 				bool inTabZone = true;
-				for (int i = 0; i < comment.size(); i++)
+				for (uint32_t i = 0; i < comment.size(); i++)
 				{
 						if (comment.at(i) == '\n')
 						{
@@ -88,7 +88,7 @@ public:
 				fileOut << msg->getName();
 				fileOut << "(";
 				bool first = true;
-				for (int i = 0; i < msg->getFields().size(); i++)
+				for (uint32_t i = 0; i < msg->getFields().size(); i++)
 				{
 						if (msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
 						{
@@ -120,7 +120,7 @@ public:
 
 		Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr);
 
-		bool run(int argc, char* argv[]);
+		virtual bool run(int argc, char* argv[]);
 
 		virtual ~Runner();
 
@@ -135,8 +135,8 @@ protected:
 		CommandArgumentManager* cmdArgManager;
 		TypeMap* typeMap;
 		Parser* parser;
-		std::string fileEnding;
 
+		std::string fileEnding;
 		std::string msgInPath;
 		std::string msgOutPath;
 		std::string templatePath;

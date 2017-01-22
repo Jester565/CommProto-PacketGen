@@ -1,0 +1,160 @@
+message VehicleIdentification
+{
+  uint16 vehicle_id = 0;
+  uint8 vehicle_type = 0;
+}
+
+message VehicleAuthorizationRequest {
+	uint16 vehicle_id = 0;
+	uint8 vehicle_type = 0;
+	uint8 authorized_services;
+	uint8 granted_services;
+}
+
+//This comment will be put at the top of the generated file
+message VehicleAuthorizationReply
+{
+  //This comment will show above the field
+  uint16 vehicle_id = 0;
+  uint8 vehicle_type = 0;
+  uint8 authorized_services = 0;
+  //An enumerator-like number for identication
+  uint8 granted_services = 0;
+}
+
+/*
+  You can also have multi-line comments.
+  Pretty cool right?
+*/
+message VehicleModeCommand
+{
+  /*
+    They work on fields too...
+    of course
+  */
+  uint16 vehicle_id = 0;
+  //The mode of the vehicle
+  uint8 vehicle_mode = 0;
+}
+
+message VehicleTerminationCommand
+{
+  uint16 vehicle_id = 0;
+  uint8 termination_mode = 0;
+}
+
+message VehicleTelemetryCommand
+{
+  uint16 vehicle_id = 0;
+  uint8 telemetry_select = 0;
+  //In milliseconds
+  uint8 telemetry_rate = 0;
+}
+
+message VehicleSystemStatus
+{
+  uint16 vehicle_id = 0;
+  uint8 vehicle_mode = 0;
+  uint8 vehicle_state = 0;
+}
+
+message VehicleInertialState
+{
+  uint16 vehicle_id = 0;
+  double latitude = 0;
+  double longitude = 0;
+  float altitude = 0;
+  float roll = 0;
+  float pitch = 0;
+  float heading = 0;
+  float north_speed = 0;
+  float east_speed = 0;
+  float vertical_speed = 0;
+  float roll_rate = 0;
+  float pitch_rate = 0;
+  float yaw_rate = 0;
+  float north_accel = 0;
+  float east_accel = 0;
+  float vertical_accel = 0;
+}
+
+message VehicleGlobalPosition
+{
+  uint16 vehicle_id = 0;
+  int32 latitude = 0;
+  int32 longitude = 0;
+  int32 altitude = 0;
+  int16 x_speed = 0;
+  int16 y_speed = 0;
+  int16 z_speed = 0;
+}
+
+message VehicleBodySensedState
+{
+  uint16 vehicle_id = 0;
+  int16 x_accel = 0;
+  int16 y_accel = 0;
+  int16 z_accel = 0;
+  int16 roll_rate = 0;
+  int16 pitch_rate = 0;
+  int16 yaw_rate = 0;
+}
+
+message VehicleAttitude
+{
+  uint16 vehicle_id = 0;
+  float roll = 0;
+  float pitch = 0;
+  float yaw = 0;
+}
+
+message AirVehicleGroundRelativeState
+{
+  uint16 vehicle_id = 0;
+  float angle_of_attack = 0;
+  float angle_of_sideslip = 0;
+  float true_airspeed = 0;
+  float indicated_airspeed = 0;
+  float north_wind_speed = 0;
+  float east_wind_speed = 0;
+  float north_ground_speed = 0;
+  float east_ground_speed = 0;
+  float barometric_pressure = 0;
+  float barometric_altitude = 0;
+}
+
+message VehicleWaypointCommand
+{
+  uint16 vehicle_id = 0;
+  float latitude = 0;
+  float longitude = 0;
+  float altitude = 0;
+}
+
+message Battery
+{
+  uint32 batteryPercentage = 0;
+}
+
+message TargetStatus
+{
+  double target_radius = 0;
+  double target_angle = 0;
+  double target_altitude = 0;
+}
+
+message TargetAcknowledgement
+{
+  uint8 target_status = 0;
+}
+
+message TargetDesignationCommand
+{
+  uint16 vehicle_id = 0;
+  uint8 payload_id = 0;
+  uint8 target_id = 0;
+  uint8 target_type = 0;
+  int32 latitude = 0;
+  int32 longitude = 0;
+  int32 altitude = 0;
+}

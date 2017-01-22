@@ -2,6 +2,8 @@
 #include <functional>
 
 const std::string CppRunner::TEMPLATE_FILE_PATH = "./template.h";
+const std::string CppRunner::DEFAULT_FILE_ENDING = "h";
+
 
 CppRunner::CppRunner(CommandArgumentManager* cmdArgManager)
 		:Runner(cmdArgManager, TEMPLATE_FILE_PATH)
@@ -13,7 +15,7 @@ bool CppRunner::checkArguments()
 		fileEnding = (*cmdArgManager->getValue("E"));
 		if (fileEnding.empty())
 		{
-				fileEnding = "h";
+				fileEnding = DEFAULT_FILE_ENDING;
 		}
 		return Runner::checkArguments();
 }

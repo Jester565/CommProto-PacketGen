@@ -5,9 +5,9 @@ CommandArgumentManager::CommandArgumentManager()
 {
 }
 
-void CommandArgumentManager::addArgument(char * key, bool usesStr, char * defaultValue)
+void CommandArgumentManager::addArgument(char * key, const std::string& description, bool usesStr, char * defaultValue)
 {
-		arguments.emplace(std::make_pair(std::string(key), new CommandArgument(usesStr, defaultValue)));
+		arguments.emplace(std::make_pair(std::string(key), new CommandArgument(usesStr, defaultValue, description)));
 }
 
 bool CommandArgumentManager::readArgs(int numArgs, char * args[])
@@ -69,14 +69,19 @@ bool CommandArgumentManager::readArgs(int numArgs, char * args[])
 						}
 				}
 		}
+		bool success = true;
 		for (auto it = arguments.begin(); it != arguments.end(); it++)
 		{
-				if (!it->second->hasValue())
+				if (!it->second->hasValue() && it->second->usesStr())
 				{
-						return false;
+						if (getValue("H") == nullptr)
+						{
+								std::cerr << "Missing essential command argument " << it->first << "  " << it->second->getDescription() << std::endl << std::endl;
+						}
+						success = false;
 				}
 		}
-		return true;
+		return success;
 }
 
 std::string * CommandArgumentManager::getValue(char * key)
@@ -87,6 +92,20 @@ std::string * CommandArgumentManager::getValue(char * key)
 				return it->second->getValue();
 		}
 		return nullptr;
+}
+
+void CommandArgumentManager::printManual()
+{
+		std::cout << "Command Manual" << std::endl;
+		for (auto it = arguments.begin(); it != arguments.end(); it++)
+		{
+				std::cout << it->first;
+				for (int i = 0; i < 5; i++)
+				{
+						std::cout << " ";
+				}
+				std::cout << it->second->getDescription() << std::endl << std::endl;
+		}
 }
 
 CommandArgumentManager::~CommandArgumentManager()

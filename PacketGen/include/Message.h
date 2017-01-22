@@ -70,6 +70,10 @@ public:
 
 		std::string getName()
 		{
+				if (name == nullptr)
+				{
+						return std::string("");
+				}
 				return *name;
 		}
 

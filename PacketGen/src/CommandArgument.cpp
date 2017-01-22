@@ -1,7 +1,7 @@
 #include "CommandArgument.h"
 
-CommandArgument::CommandArgument(bool usesStr, char * defaultValue)
-		:value(nullptr), useStr(usesStr)
+CommandArgument::CommandArgument(bool usesStr, char * defaultValue, const std::string& description)
+		:description(description), useStr(usesStr), value(nullptr)
 {
 		if (defaultValue != nullptr)
 		{
@@ -36,6 +36,9 @@ void CommandArgument::setArgument(char* val)
 
 CommandArgument::~CommandArgument()
 {
-		delete value;
-		value = nullptr;
+		if (value != nullptr)
+		{
+				delete value;
+				value = nullptr;
+		}
 }

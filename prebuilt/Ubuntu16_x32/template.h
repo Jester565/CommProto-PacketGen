@@ -53,7 +53,7 @@ namespace ngcp {
     when receiving data.
     */
     comnet::AbstractPacket *Create() override {
-      return new ^Name^();
+      return new ^CreateConstruct^;
     }
 
     /**

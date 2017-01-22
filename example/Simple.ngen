@@ -1,4 +1,0 @@
-message Dog {
-  int16 age = 0;
-	string name;
-}

@@ -4,8 +4,6 @@
 class CsRunner : public Runner
 {
 public:
-		static const std::string TEMPLATE_PATH;
-
 		void HandleConstructor(Message* msg, std::ofstream& fileOut, int space)
 		{
 				fileOut << "public ";
@@ -100,6 +98,9 @@ public:
 						}
 				}
 		}
+
+		static const std::string TEMPLATE_PATH;
+		static const std::string DEFAULT_FILE_ENDING;
 
 		CsRunner(CommandArgumentManager* cmdArgManager);
 

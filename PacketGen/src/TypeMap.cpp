@@ -14,7 +14,7 @@ void TypeMap::addType(const std::string & key, const std::string & typeName, int
 
 void TypeMap::addType(const std::string & packGenTypeName, int numBytes, const std::string & defaultVal)
 {
-		Type* type = new Type("PLACEHOLDER", numBytes, defaultVal);
+		Type* type = new Type(packGenTypeName, numBytes, defaultVal);
 		types.emplace(std::make_pair(packGenTypeName, type));
 }
 
@@ -44,4 +44,9 @@ bool TypeMap::convertType(Type * typePtr)
 
 TypeMap::~TypeMap()
 {
+		for (auto it = types.begin(); it != types.end(); it++)
+		{
+				delete it->second;
+				it->second = nullptr;
+		}
 }

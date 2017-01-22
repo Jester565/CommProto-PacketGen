@@ -4,7 +4,7 @@
 class CommandArgument
 {
 public:
-		CommandArgument(bool useStr, char* defaultValue);
+		CommandArgument(bool useStr, char* defaultValue, const std::string& description);
 
 		virtual bool usesStr();
 
@@ -14,11 +14,16 @@ public:
 
 		virtual void setArgument(char* val);
 
+		std::string getDescription()
+		{
+				return description;
+		}
+
 		~CommandArgument();
 
 private:
 		std::string* value;
-
+		std::string description;
 		bool useStr;
 };
 
