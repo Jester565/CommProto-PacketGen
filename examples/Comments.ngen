@@ -1,0 +1,11 @@
+/*
+This is a comment about the entire message below.
+It allows for new lines and everything.
+*/
+message Packet {
+  //This comment describes the “num” field
+  uint8 num;
+  
+  /*This comment describes the “name” field*/
+  string name = “pack”;
+}
