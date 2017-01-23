@@ -2,6 +2,8 @@
 ##Description
 Converts simple message files to C++ or C# code for packets.
 
+##Please read PacketGen_Guide.docx for much more information
+
 ##Using the precompiled version
 1. Clone the repository
 2. Go into the directory with the name of your OS
