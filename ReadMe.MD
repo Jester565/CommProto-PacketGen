@@ -1,4 +1,6 @@
 # PacketGenerator for CommProtocol Library
+##Please read PacketGen_Guide.docx for much more information
+
 ##Description
 Converts simple message files to C++ or C# code for packets.
 
