@@ -61,8 +61,8 @@ message VehicleSystemStatus
 message VehicleInertialState
 {
   uint16 vehicle_id = 0;
-  double latitude = 0;
   double longitude = 0;
+  double latitude = 0;
   float altitude = 0;
   float roll = 0;
   float pitch = 0;
@@ -81,8 +81,8 @@ message VehicleInertialState
 message VehicleGlobalPosition
 {
   uint16 vehicle_id = 0;
-  int32 latitude = 0;
   int32 longitude = 0;
+  int32 latitude = 0;
   int32 altitude = 0;
   int16 x_speed = 0;
   int16 y_speed = 0;
@@ -126,8 +126,8 @@ message AirVehicleGroundRelativeState
 message VehicleWaypointCommand
 {
   uint16 vehicle_id = 0;
-  float latitude = 0;
   float longitude = 0;
+  float latitude = 0;
   float altitude = 0;
 }
 
@@ -154,7 +154,7 @@ message TargetDesignationCommand
   uint8 payload_id = 0;
   uint8 target_id = 0;
   uint8 target_type = 0;
-  int32 latitude = 0;
   int32 longitude = 0;
+  int32 latitude = 0;
   int32 altitude = 0;
 }
