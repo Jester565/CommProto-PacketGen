@@ -7,33 +7,21 @@ message VehicleIdentification
 message VehicleAuthorizationRequest {
 	uint16 vehicle_id = 0;
 	uint8 vehicle_type = 0;
-	uint8 authorized_services;
-	uint8 granted_services;
+	uint8 authorized_services = 0;
+	uint8 granted_services = 0;
 }
 
-//This comment will be put at the top of the generated file
 message VehicleAuthorizationReply
 {
-  //This comment will show above the field
   uint16 vehicle_id = 0;
   uint8 vehicle_type = 0;
   uint8 authorized_services = 0;
-  //An enumerator-like number for identication
   uint8 granted_services = 0;
 }
 
-/*
-  You can also have multi-line comments.
-  Pretty cool right?
-*/
 message VehicleModeCommand
 {
-  /*
-    They work on fields too...
-    of course
-  */
   uint16 vehicle_id = 0;
-  //The mode of the vehicle
   uint8 vehicle_mode = 0;
 }
 
@@ -47,7 +35,7 @@ message VehicleTelemetryCommand
 {
   uint16 vehicle_id = 0;
   uint8 telemetry_select = 0;
-  //In milliseconds
+  //milliseconds
   uint8 telemetry_rate = 0;
 }
 
@@ -61,73 +49,116 @@ message VehicleSystemStatus
 message VehicleInertialState
 {
   uint16 vehicle_id = 0;
-  double longitude = 0;
-  double latitude = 0;
+  //radians
+  float longitude = 0;
+  //radians
+  float latitude = 0;
+  //meters
   float altitude = 0;
+  //radians
   float roll = 0;
+  //radians
   float pitch = 0;
+  //radians
   float heading = 0;
+  //meters/second
   float north_speed = 0;
+  //meters/second
   float east_speed = 0;
+  //meters/second
   float vertical_speed = 0;
+  //radians/second
   float roll_rate = 0;
+  //radians/second
   float pitch_rate = 0;
+  //radians/second
   float yaw_rate = 0;
+  //meters/second/second
   float north_accel = 0;
+  //meters/second/second
   float east_accel = 0;
+  //meters/second/second
   float vertical_accel = 0;
 }
 
 message VehicleGlobalPosition
 {
   uint16 vehicle_id = 0;
-  int32 longitude = 0;
-  int32 latitude = 0;
-  int32 altitude = 0;
-  int16 x_speed = 0;
-  int16 y_speed = 0;
-  int16 z_speed = 0;
+  //radians
+  float longitude = 0;
+  //radians
+  float latitude = 0;
+  //meters
+  float altitude = 0;
+  //meters/second
+  float x_speed = 0;
+  //meters/second
+  float y_speed = 0;
+  //meters/second
+  float z_speed = 0;
 }
 
 message VehicleBodySensedState
 {
   uint16 vehicle_id = 0;
-  int16 x_accel = 0;
-  int16 y_accel = 0;
-  int16 z_accel = 0;
-  int16 roll_rate = 0;
-  int16 pitch_rate = 0;
-  int16 yaw_rate = 0;
+  //meters/second/second
+  float x_accel = 0;
+  //meters/second/second
+  float y_accel = 0;
+  //meters/second/second
+  float z_accel = 0;
+  //radians/second
+  float roll_rate = 0;
+  //radians/second
+  float pitch_rate = 0;
+  //radians/second
+  float yaw_rate = 0;
 }
 
 message VehicleAttitude
 {
   uint16 vehicle_id = 0;
+  //radians
   float roll = 0;
+  //radians
   float pitch = 0;
+  //radians
   float yaw = 0;
 }
 
 message AirVehicleGroundRelativeState
 {
   uint16 vehicle_id = 0;
+  //radians
   float angle_of_attack = 0;
+  //radians
   float angle_of_sideslip = 0;
+  //meters/second
   float true_airspeed = 0;
+  //meters/second
   float indicated_airspeed = 0;
+  //meters/second
   float north_wind_speed = 0;
+  //meters/second
   float east_wind_speed = 0;
+  //meters/second
   float north_ground_speed = 0;
+  //meters/second
   float east_ground_speed = 0;
+  //pascals
   float barometric_pressure = 0;
+  //meters
   float barometric_altitude = 0;
 }
 
 message VehicleWaypointCommand
 {
   uint16 vehicle_id = 0;
+  //radians
   float longitude = 0;
+  //radians
   float latitude = 0;
+  //meters
   float altitude = 0;
 }
 
@@ -138,8 +169,11 @@ message Battery
 
 message TargetStatus
 {
+  //kilometers
   double target_radius = 0;
+  //radians
   double target_angle = 0;
+  //meters
   double target_altitude = 0;
 }
 
@@ -154,7 +188,10 @@ message TargetDesignationCommand
   uint8 payload_id = 0;
   uint8 target_id = 0;
   uint8 target_type = 0;
-  int32 longitude = 0;
-  int32 latitude = 0;
-  int32 altitude = 0;
+  //radians
+  float longitude = 0;
+  //radians
+  float latitude = 0;
+  //meters
+  float altitude = 0;
 }
