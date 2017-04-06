@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-const std::vector <char> Parser::SEPARATE_WORD_CHARS({ '{', '}', '=', ';' });
+const std::vector <char> Parser::SEPARATE_WORD_CHARS({ '{', '}', '=', ';', '<', '>', ',' });
 const std::vector <char> Parser::IGNORE_CHARS({ '\r', '\t' });
 
 Parser::Parser()
@@ -199,12 +199,25 @@ bool Parser::convertTypes(TypeMap * typeMap)
 				std::vector <Field*>& fields = messages.at(i)->getFields();
 				for (int j = 0; j < fields.size(); j++)
 				{
-					if (!fields.at(j)->custom) {
+					if (!fields.at(j)->isCustomType()) {
 						Type* typePtr = fields.at(j)->type;
 						if (!typeMap->convertType(typePtr))
 						{
 							std::cerr << typePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
 							return false;
+						}
+						for (int k = 0; k < fields.at(j)->subTypes.size(); k++) {
+							Type* subTypePtr = fields.at(j)->subTypes.at(k);
+							if (!subTypePtr->custom) {
+								if (subTypePtr->name.at(subTypePtr->name.size() - 1) == '*') {
+									subTypePtr->name.pop_back();
+									subTypePtr->isPtr = true;
+								}
+								if (!typeMap->convertType(subTypePtr)) {
+									std::cerr << subTypePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
+									return false;
+								}
+							}
 						}
 					}
 				}
@@ -335,8 +348,7 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 							typeName = word.substr(1, word.size() - 2);
 							custom = true;
 						}
-						activeField->type = new Type(typeName);
-						activeField->custom = custom;
+						activeField->type = new Type(typeName, custom);
 						if (!comment.empty())
 						{
 								activeField->comment = new std::string(comment);
@@ -350,9 +362,13 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 					}
 					activeField->name = new std::string(word);
 				}
+				else if (word == "<" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
+				{
+					activeField->assignmentMode = Field::ASSIGN_MODE_SUB_TYPE;
+				}
 				else if (word == "=" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
 				{
-					if (activeField->custom) {
+					if (activeField->isCustomType()) {
 						std::cerr << "= not allowed for custom types" << std::endl;
 						return false;
 					}
@@ -360,7 +376,7 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				}
 				else if (word == "~" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
 				{
-					if (activeField->custom) {
+					if (activeField->isCustomType()) {
 						std::cerr << "~ not allowed for custom types" << std::endl;
 						return false;
 					}
@@ -370,16 +386,34 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				{
 						if (word == ";")
 						{
-								if (activeField->defaultArg == nullptr)
-								{
-										std::cerr << "No default argument was put after = or ~" << std::endl;;
-										return false;
+							if (activeField->assignmentMode == Field::ASSIGN_MODE_SUB_TYPE) {
+								if (activeField->subTypes.size() == 0) {
+									std::cerr << "No types were given" << std::endl;
+									return false;
 								}
-								if (activeMessage->getIsObj() && activeField->assignmentMode == Field::ASSIGN_MODE_CREATE_CONSTRUCT) {
-									std::cerr << "WARNING: A default constructor (constructor with no parameters) is required. It is recommended that you set all default values for parameters here using the = sign." << std::endl << std::endl;
+							}
+							else if (activeField->defaultArg == nullptr)
+							{
+								std::cerr << "No default argument was put after = or ~" << std::endl;;
+								return false;
+							}
+							if (activeMessage->getIsObj() && activeField->assignmentMode == Field::ASSIGN_MODE_CREATE_CONSTRUCT) {
+								std::cerr << "WARNING: A default constructor (constructor with no parameters) is required. It is recommended that you set all default values for parameters here using the = sign." << std::endl << std::endl;
+							}
+							activeMessage->addField(activeField);
+							activeField = nullptr;
+						}
+						else if (activeField->assignmentMode == Field::ASSIGN_MODE_SUB_TYPE) {
+							if (word != ">" && word != ",") {
+								std::string typeName = word;
+								bool custom = false;
+								if (word.size() > 2 && word.at(0) == '#' && word.at(word.size() - 1) == '#') {
+									typeName = word.substr(1, word.size() - 2);
+									custom = true;
 								}
-								activeMessage->addField(activeField);
-								activeField = nullptr;
+								Type* subType = new Type(typeName, custom);
+								activeField->subTypes.push_back(subType);
+							}
 						}
 						else
 						{

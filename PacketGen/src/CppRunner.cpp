@@ -35,6 +35,12 @@ bool CppRunner::linkFields()
 		typeMap->setLangTypeName(FLOAT_PACKGEN_TYPE_NAME, "real32_t");
 		typeMap->setLangTypeName(DOUBLE_PACKGEN_TYPE_NAME, "real64_t");
 		typeMap->setLangTypeName(STRING_PACKGEN_TYPE_NAME, "std::string");
+		typeMap->setLangTypeName(MAP_PACKGEN_TYPE_NAME, "std::map");
+		typeMap->setLangTypeName(HASH_MAP_PACKGEN_TYPE_NAME, "std::unordered_map");
+		typeMap->setLangTypeName(SET_PACKGEN_TYPE_NAME, "std::set");
+		typeMap->setLangTypeName(HASH_SET_PACKGEN_TYPE_NAME, "std::unordered_set");
+		typeMap->setLangTypeName(VECTOR_PACKGEN_TYPE_NAME, "std::vector");
+		typeMap->setLangTypeName(LINKED_LIST_PACKGEN_TYPE_NAME, "std::list");
 		return true;
 }
 

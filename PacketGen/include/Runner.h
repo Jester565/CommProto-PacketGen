@@ -18,6 +18,12 @@ const std::string INT64_PACKGEN_TYPE_NAME = "int64";
 const std::string FLOAT_PACKGEN_TYPE_NAME = "float";
 const std::string DOUBLE_PACKGEN_TYPE_NAME = "double";
 const std::string STRING_PACKGEN_TYPE_NAME = "string";
+const std::string VECTOR_PACKGEN_TYPE_NAME = "vector";
+const std::string LINKED_LIST_PACKGEN_TYPE_NAME = "linked_list";
+const std::string HASH_SET_PACKGEN_TYPE_NAME = "hash_set";
+const std::string HASH_MAP_PACKGEN_TYPE_NAME = "hash_map";
+const std::string SET_PACKGEN_TYPE_NAME = "set";
+const std::string MAP_PACKGEN_TYPE_NAME = "map";
 
 class Runner
 {
@@ -90,7 +96,7 @@ public:
 				bool first = true;
 				for (uint32_t i = 0; i < msg->getFields().size(); i++)
 				{
-						if (!msg->getFields().at(i)->custom && msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
+						if (!msg->getFields().at(i)->isCustomType() && msg->getFields().at(i)->subTypes.size() == 0 && msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
 						{
 								if (!first)
 								{

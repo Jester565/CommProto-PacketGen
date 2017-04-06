@@ -4,13 +4,52 @@
 class CsRunner : public Runner
 {
 public:
+	std::string getContainerFunc(std::vector<Type*> subTypes) {
+		if (subTypes.size() == 1) {
+			if (!subTypes.at(0)->isPtr) {
+				return "Unique";
+			}
+		}
+		else
+		{
+			std::string str;
+			if (subTypes.at(1)->isPtr) {
+				return "UniqueKey";
+			}
+			else
+			{
+				return "UniqueKeyVal";
+			}
+		}
+		return "";
+	}
+
+	std::string getICollect(std::vector<Type*> subTypes, std::string& name) {
+		std::string str = "ICollection<";
+		if (subTypes.size() == 1) {
+			str += "ObjSerializable";
+		}
+		else
+		{
+			str += "KeyValuePair<ObjSerializable, ObjSerializable>";
+		}
+		str += ">";
+		str += " ";
+		str += "iCollect";
+		str += name;
+		str += " = ";
+		str += name;
+		str += ";";
+		return str;
+	}
+
 		void HandleConstructor(Message* msg, std::ofstream& fileOut, int space)
 		{
 				fileOut << "public ";
 				fileOut << msg->getName() << "(";
 				std::vector <Field*> orderedFields;
 				for (int i = 0; i < msg->getFields().size(); i++) {
-					if (!msg->getFields().at(i)->custom) {
+					if (!msg->getFields().at(i)->isCustomType() && msg->getFields().at(i)->subTypes.size() == 0) {
 						orderedFields.push_back(msg->getFields().at(i));
 					}
 				}
@@ -60,10 +99,22 @@ public:
 					fileOut << ";";
 				}
 				for (int i = 0; i < msg->getFields().size(); i++) {
-					if (msg->getFields().at(i)->custom) {
+					if (msg->getFields().at(i)->isCustomType()) {
 						Runner::NewLine(fileOut, space + TAB_SPACE);
 						fileOut << "this." << *msg->getFields().at(i)->name << " = ";
 						fileOut << "new " << msg->getFields().at(i)->type->name << "();";
+					}
+					else if (msg->getFields().at(i)->subTypes.size() > 0) {
+						Field* field = msg->getFields().at(i);
+						Runner::NewLine(fileOut, space + TAB_SPACE);
+						fileOut << "this." << *field->name << " = new " << field->type->name << " <";
+						for (int j = 0; j < field->subTypes.size(); j++) {
+							fileOut << "ObjSerializable";
+							if (j < field->subTypes.size() - 1) {
+								fileOut << ", ";
+							}
+						}
+						fileOut << ">();";
 					}
 				}
 				Runner::NewLine(fileOut, space);
@@ -74,9 +125,14 @@ public:
 		{
 			for (int i = 0; i < msg->getFields().size(); i++)
 			{
-				if (msg->getFields().at(i)->custom) {
+				if (msg->getFields().at(i)->isCustomType()) {
 					fileOut << *msg->getFields().at(i)->name;
 					fileOut << ".Input(obj);";
+				}
+				else if (msg->getFields().at(i)->subTypes.size() > 0) {
+					fileOut << "obj.Input" << getContainerFunc(msg->getFields().at(i)->subTypes) << "(";
+					fileOut << *msg->getFields().at(i)->name;
+					fileOut << ");";
 				}
 				else
 				{
@@ -95,9 +151,25 @@ public:
 		{
 			for (int i = msg->getFields().size() - 1; i >= 0; i--)
 			{
-				if (msg->getFields().at(i)->custom) {
+				if (msg->getFields().at(i)->isCustomType()) {
 					fileOut << *msg->getFields().at(i)->name;
 					fileOut << ".Output(obj);";
+				}
+				else if (msg->getFields().at(i)->subTypes.size() > 0) {
+					Field* field = msg->getFields().at(i);
+					fileOut << getICollect(field->subTypes, *field->name);
+					Runner::NewLine(fileOut, space);
+					fileOut << "obj.Output" << getContainerFunc(field->subTypes) << "(";
+					fileOut << "ref iCollect" << *field->name;
+					for (int j = 0; j < field->subTypes.size(); j++) {
+						fileOut << ", new ";
+						fileOut << field->subTypes.at(j)->name;
+						if (!field->subTypes.at(j)->custom) {
+							fileOut << "Ser";
+						}
+						fileOut << "()";
+					}
+					fileOut << ");";
 				}
 				else
 				{
@@ -123,6 +195,18 @@ public:
 				}
 				fileOut << "public ";
 				fileOut << msg->getFields().at(i)->type->name;
+				if (msg->getFields().at(i)->subTypes.size() > 0)
+				{
+					Field* field = msg->getFields().at(i);
+					fileOut << " <";
+					for (int j = 0; j < field->subTypes.size(); j++) {
+						fileOut << "ObjSerializable";
+						if (j < field->subTypes.size() - 1) {
+							fileOut << ", ";
+						}
+					}
+					fileOut << ">";
+				}
 				fileOut << " ";
 				fileOut << *msg->getFields().at(i)->name;
 				fileOut << " { get; set; }";

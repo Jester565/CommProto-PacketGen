@@ -34,6 +34,12 @@ bool CsRunner::linkFields()
 		typeMap->setLangTypeName(FLOAT_PACKGEN_TYPE_NAME, "Single");
 		typeMap->setLangTypeName(DOUBLE_PACKGEN_TYPE_NAME, "Double");
 		typeMap->setLangTypeName(STRING_PACKGEN_TYPE_NAME, "String");
+		typeMap->setLangTypeName(MAP_PACKGEN_TYPE_NAME, "SortedDictionary");
+		typeMap->setLangTypeName(HASH_MAP_PACKGEN_TYPE_NAME, "Dictionary");
+		typeMap->setLangTypeName(SET_PACKGEN_TYPE_NAME, "SortedSet");
+		typeMap->setLangTypeName(HASH_SET_PACKGEN_TYPE_NAME, "HashSet");
+		typeMap->setLangTypeName(VECTOR_PACKGEN_TYPE_NAME, "List");
+		typeMap->setLangTypeName(LINKED_LIST_PACKGEN_TYPE_NAME, "LinkedList");
 		return true;
 }
 

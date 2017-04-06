@@ -26,7 +26,7 @@ public:
 		void HandleInclude(Message* msg, std::ofstream& fileOut, int space)
 		{
 			for (int i = 0; i < msg->getFields().size(); i++) {
-				if (msg->getFields().at(i)->custom) {
+				if (msg->getFields().at(i)->isCustomType()) {
 					fileOut << "#include \"" << msg->getFields().at(i)->type->name << "." << fileEnding << "\"";
 					Runner::NewLine(fileOut, space);
 				}
@@ -38,7 +38,7 @@ public:
 				fileOut << msg->getName() << "(";
 				std::vector <Field*> orderedFields;
 				for (int i = 0; i < msg->getFields().size(); i++) {
-					if (!msg->getFields().at(i)->custom) {
+					if (!msg->getFields().at(i)->isCustomType() && msg->getFields().at(i)->subTypes.size() == 0) {
 						orderedFields.push_back(msg->getFields().at(i));
 					}
 				}
@@ -128,6 +128,21 @@ public:
 								Runner::HandleSurroundComment(*msg->getFields().at(i)->comment, fileOut, space);
 						}
 						fileOut << msg->getFields().at(i)->type->name;
+						if (msg->getFields().at(i)->subTypes.size() > 0)
+						{
+							Field* field = msg->getFields().at(i);
+							fileOut << " <";
+							for (int j = 0; j < field->subTypes.size(); j++) {
+								fileOut << field->subTypes.at(j)->name;
+								if (field->subTypes.at(j)->isPtr) {
+									fileOut << "*";
+								}
+								if (j < field->subTypes.size() - 1) {
+									fileOut << ", ";
+								}
+							}
+							fileOut << ">";
+						}
 						fileOut << " ";
 						fileOut << *msg->getFields().at(i)->name;
 						fileOut << ";";

@@ -127,6 +127,12 @@ bool Runner::linkFields()
 		typeMap->addType(FLOAT_PACKGEN_TYPE_NAME, 4, "0");
 		typeMap->addType(DOUBLE_PACKGEN_TYPE_NAME, 8, "0");
 		typeMap->addType(STRING_PACKGEN_TYPE_NAME, 0, "\"\"");
+		typeMap->addType(VECTOR_PACKGEN_TYPE_NAME, 0, "");
+		typeMap->addType(LINKED_LIST_PACKGEN_TYPE_NAME, 0, "");
+		typeMap->addType(MAP_PACKGEN_TYPE_NAME, 0, "");
+		typeMap->addType(HASH_MAP_PACKGEN_TYPE_NAME, 0, "");
+		typeMap->addType(SET_PACKGEN_TYPE_NAME, 0, "");
+		typeMap->addType(HASH_SET_PACKGEN_TYPE_NAME, 0, "");
 		return true;
 }
 
