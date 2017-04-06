@@ -90,7 +90,7 @@ public:
 				bool first = true;
 				for (uint32_t i = 0; i < msg->getFields().size(); i++)
 				{
-						if (msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
+						if (!msg->getFields().at(i)->custom && msg->getFields().at(i)->assignmentMode != Field::ASSIGN_MODE_SET_DEFAULT)
 						{
 								if (!first)
 								{
@@ -118,7 +118,7 @@ public:
 				fileOut << msg->getName();
 		}
 
-		Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr);
+		Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr, const std::string& templateObjPathStr);
 
 		virtual bool run(int argc, char* argv[]);
 
@@ -140,5 +140,6 @@ protected:
 		std::string msgInPath;
 		std::string msgOutPath;
 		std::string templatePath;
+		std::string templateObjPath;
 };
 

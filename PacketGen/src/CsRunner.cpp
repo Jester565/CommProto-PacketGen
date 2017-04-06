@@ -2,10 +2,11 @@
 #include <functional>
 
 const std::string CsRunner::TEMPLATE_PATH = "./template.cs";
+const std::string CsRunner::OBJ_TEMPLATE_PATH = "./templateObj.cs";
 const std::string CsRunner::DEFAULT_FILE_ENDING = "cs";
 
 CsRunner::CsRunner(CommandArgumentManager * cmdArgManager)
-		:Runner(cmdArgManager, TEMPLATE_PATH)
+		:Runner(cmdArgManager, TEMPLATE_PATH, OBJ_TEMPLATE_PATH)
 {
 }
 

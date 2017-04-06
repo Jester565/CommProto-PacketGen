@@ -37,6 +37,8 @@ set(TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PacketGen/template/)
 
 configure_file(${TEMPLATE_DIR}/template.h template.h COPYONLY)
 configure_file(${TEMPLATE_DIR}/template.cs template.cs COPYONLY)
+configure_file(${TEMPLATE_DIR}/templateObj.h templateObj.h COPYONLY)
+configure_file(${TEMPLATE_DIR}/templateObj.cs templateObj.cs COPYONLY)
 
 set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PacketGen/include/)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PacketGen/src/)
@@ -50,7 +52,8 @@ set(PACKETGEN_HEADERS
 	${HEADER_DIR}/Message.h
 	${HEADER_DIR}/Parser.h
 	${HEADER_DIR}/Runner.h
-	${HEADER_DIR}/TypeMap.h)
+	${HEADER_DIR}/TypeMap.h
+	${HEADER_DIR}/ObjSerializable.h)
 
 set(PACKETGEN_SOURCES
 	${SOURCE_DIR}/CommandArgument.cpp
@@ -61,7 +64,8 @@ set(PACKETGEN_SOURCES
 	${SOURCE_DIR}/Parser.cpp
 	${SOURCE_DIR}/Runner.cpp
 	${SOURCE_DIR}/Source.cpp
-	${SOURCE_DIR}/TypeMap.cpp)
+	${SOURCE_DIR}/TypeMap.cpp
+	${SOURCE_DIR}/ObjSerializable.cpp)
 		
 if(diag)
 	set(alleg "-" CACHE STRING "The path to allegro's static library")

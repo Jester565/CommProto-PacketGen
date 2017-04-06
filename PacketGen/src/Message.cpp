@@ -2,11 +2,10 @@
 
 
 
-Message::Message()
-		:name(nullptr), comment(nullptr), scopeStarted(false)
+Message::Message(bool isObj)
+		:name(nullptr), comment(nullptr), scopeStarted(false), isObj(isObj)
 {
 }
-
 
 void Message::addField(Field * field)
 {

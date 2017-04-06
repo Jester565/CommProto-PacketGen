@@ -171,14 +171,23 @@ bool Parser::parse(const std::string& path)
 		return true;
 }
 
-bool Parser::write(const std::string & msgOutPath, const std::string & templatePath, const std::string & fileEnding)
+bool Parser::write(const std::string & msgOutPath, const std::string & templatePath, const std::string& templateObjPath, const std::string & fileEnding)
 {
 		for (int i = 0; i < messages.size(); i++)
 		{
+			if (messages.at(i)->getIsObj()) {
+				if (!writeMessage(messages.at(i), msgOutPath, templateObjPath, fileEnding))
+				{
+					return false;
+				}
+			}
+			else
+			{
 				if (!writeMessage(messages.at(i), msgOutPath, templatePath, fileEnding))
 				{
-						return false;
+					return false;
 				}
+			}
 		}
 		return true;
 }
@@ -190,12 +199,14 @@ bool Parser::convertTypes(TypeMap * typeMap)
 				std::vector <Field*>& fields = messages.at(i)->getFields();
 				for (int j = 0; j < fields.size(); j++)
 				{
+					if (!fields.at(j)->custom) {
 						Type* typePtr = fields.at(j)->type;
 						if (!typeMap->convertType(typePtr))
 						{
-								std::cerr << typePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" <<  std::endl;
-								return false;
+							std::cerr << typePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
+							return false;
 						}
+					}
 				}
 		}
 		return true;
@@ -286,9 +297,13 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 								activeMessage->setComment(comment);
 						}
 				}
+				else if (word == "obj")
+				{
+					activeMessage = new ObjSerializable();
+				}
 				else
 				{
-						std::cerr << "Expecting \'message\'" << std::endl;
+						std::cerr << "Expecting \'message\' or\'obj\'" << std::endl;
 						return false;
 				}
 		}
@@ -314,7 +329,14 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				if (activeField == nullptr)
 				{
 						activeField = new Field();
-						activeField->type = new Type(word);
+						bool custom = false;
+						std::string typeName = word;
+						if (word.size() > 2 && word.at(0) == '#' && word.at(word.size() - 1) == '#') {
+							typeName = word.substr(1, word.size() - 2);
+							custom = true;
+						}
+						activeField->type = new Type(typeName);
+						activeField->custom = custom;
 						if (!comment.empty())
 						{
 								activeField->comment = new std::string(comment);
@@ -322,15 +344,27 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				}
 				else if (activeField->name == nullptr)
 				{
-						activeField->name = new std::string(word);
+					if (word == "obj" || word == "id") {
+						std::cout << word << " is not a legal type name. It may already be reserved for a parameter or field" << std::endl;
+						return false;
+					}
+					activeField->name = new std::string(word);
 				}
 				else if (word == "=" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
 				{
-						activeField->assignmentMode = Field::ASSIGN_MODE_SET_DEFAULT;
+					if (activeField->custom) {
+						std::cerr << "= not allowed for custom types" << std::endl;
+						return false;
+					}
+					activeField->assignmentMode = Field::ASSIGN_MODE_SET_DEFAULT;
 				}
 				else if (word == "~" && activeField->assignmentMode == Field::ASSIGN_MODE_NONE)
 				{
-						activeField->assignmentMode = Field::ASSIGN_MODE_CREATE_CONSTRUCT;
+					if (activeField->custom) {
+						std::cerr << "~ not allowed for custom types" << std::endl;
+						return false;
+					}
+					activeField->assignmentMode = Field::ASSIGN_MODE_CREATE_CONSTRUCT;
 				}
 				else if (activeField->assignmentMode != Field::ASSIGN_MODE_NONE)
 				{
@@ -346,15 +380,15 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 						}
 						else
 						{
-								if (activeField->defaultArg == nullptr)
-								{
-										activeField->defaultArg = new std::string(word);
-								}
-								else
-								{
-										activeField->defaultArg->append(" ");
-										activeField->defaultArg->append(word);
-								}
+							if (activeField->defaultArg == nullptr)
+							{
+									activeField->defaultArg = new std::string(word);
+							}
+							else
+							{
+									activeField->defaultArg->append(" ");
+									activeField->defaultArg->append(word);
+							}
 						}
 				}
 				else if (word == ";")

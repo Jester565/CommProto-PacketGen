@@ -1,5 +1,6 @@
 #pragma once
 #include "Message.h"
+#include "ObjSerializable.h"
 #include "TypeMap.h"
 #include <string>
 #include <unordered_map>
@@ -18,7 +19,7 @@ public:
 
 		bool parse(const std::string& path);
 
-		bool write(const std::string& msgOutPath, const std::string& templatePath, const std::string& fileEnding);
+		bool write(const std::string& msgOutPath, const std::string& templatePath, const std::string& templateObjPath, const std::string& fileEnding);
 
 		bool convertTypes(TypeMap* typeMap);
 

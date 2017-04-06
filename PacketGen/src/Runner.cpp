@@ -3,8 +3,8 @@
 #include <functional>
 #include <iostream>
 
-Runner::Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr)
-		:cmdArgManager(cmdArgManager), templatePath(templatePathStr)
+Runner::Runner(CommandArgumentManager* cmdArgManager, const std::string& templatePathStr, const std::string& templateObjPathStr)
+		:cmdArgManager(cmdArgManager), templatePath(templatePathStr), templateObjPath(templateObjPathStr)
 {
 		parser = new Parser();
 		typeMap = new TypeMap();
@@ -150,7 +150,7 @@ bool Runner::linkStatements()
 
 bool Runner::write()
 {
-		if (!parser->write(msgOutPath, templatePath, fileEnding))
+		if (!parser->write(msgOutPath, templatePath, templateObjPath, fileEnding))
 		{
 				std::cerr << "Writing failed" << std::endl;
 		}

@@ -18,7 +18,9 @@ message Goat {
   double accel ~ 5;
 }
 
-
+ObjSer Custom {
+  uint8_t nums;
+}
 
 //This comment will be placed at the top of the generated file
 message Dog {
@@ -29,6 +31,12 @@ message Dog {
   string name;  //a comment here doesn't apply to the field "name", but will be above the field "hungerLevel"
   
   int8 hungerLevel;
+
+  vector<int*> nums;
+  list<int*> nums;
+  unordered_map<int*,string*> dogs;
+  set<#Custom#> roof;
+  #Custom# roof;
 }
 
 //Note that message Goat cannot be a byte diagram as string is variable length

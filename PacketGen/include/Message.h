@@ -26,11 +26,12 @@ struct Field
 		static const int ASSIGN_MODE_CREATE_CONSTRUCT = 2;
 
 		Field()
-				:type(nullptr), name(nullptr), defaultArg(nullptr), comment(nullptr), assignmentMode(ASSIGN_MODE_NONE)
+				:type(nullptr), name(nullptr), defaultArg(nullptr), comment(nullptr), custom(false), assignmentMode(ASSIGN_MODE_NONE)
 		{
 				
 		}
 
+		bool custom;
 		Type* type;
 		std::string* name;
 		std::string* comment;
@@ -61,60 +62,65 @@ struct Field
 class Message
 {
 public:
-		Message();
+	Message(bool isObj = false);
 
-		bool hasName()
-		{
-				return name != nullptr;
-		}
+	bool hasName()
+	{
+			return name != nullptr;
+	}
 
-		std::string getName()
-		{
-				if (name == nullptr)
-				{
-						return std::string("");
-				}
-				return *name;
-		}
+	std::string getName()
+	{
+			if (name == nullptr)
+			{
+					return std::string("");
+			}
+			return *name;
+	}
 
-		void setName(const std::string& nameStr)
-		{
-				name = new std::string(nameStr);
-		}
+	void setName(const std::string& nameStr)
+	{
+			name = new std::string(nameStr);
+	}
 
-		void setComment(const std::string& commentStr)
-		{
-				comment = new std::string(commentStr);
-		}
+	void setComment(const std::string& commentStr)
+	{
+			comment = new std::string(commentStr);
+	}
 
-		std::string* getComment()
-		{
-				return comment;
-		}
+	std::string* getComment()
+	{
+			return comment;
+	}
 
-		bool hasScopeStarted()
-		{
-				return scopeStarted;
-		}
+	bool hasScopeStarted()
+	{
+			return scopeStarted;
+	}
 
-		void setScopeStarted()
-		{
-				scopeStarted = true;
-		}
+	void setScopeStarted()
+	{
+			scopeStarted = true;
+	}
 
-		void addField(Field* field);
+	void addField(Field* field);
 
-		std::vector<Field*>& getFields()
-		{
-				return fields;
-		}
+	std::vector<Field*>& getFields()
+	{
+			return fields;
+	}
 
-		~Message();
+	bool getIsObj() {
+		return isObj;
+	}
+
+	~Message();
 
 private:
-		bool scopeStarted;
-		std::string* comment;
-		std::string* name;
-		std::vector<Field*> fields;
+	bool isObj;
+	bool scopeStarted;
+	std::string* comment;
+	std::string* name;
+	std::vector<Field*> fields;
 };
 

@@ -2,11 +2,12 @@
 #include <functional>
 
 const std::string CppRunner::TEMPLATE_FILE_PATH = "./template.h";
+const std::string CppRunner::OBJ_TEMPLATE_FILE_PATH = "./templateObj.h";
 const std::string CppRunner::DEFAULT_FILE_ENDING = "h";
 
 
 CppRunner::CppRunner(CommandArgumentManager* cmdArgManager)
-		:Runner(cmdArgManager, TEMPLATE_FILE_PATH)
+		:Runner(cmdArgManager, TEMPLATE_FILE_PATH, OBJ_TEMPLATE_FILE_PATH)
 {
 }
 
@@ -40,6 +41,7 @@ bool CppRunner::linkFields()
 bool CppRunner::linkStatements()
 {
 		parser->addStatement("Define", std::bind(&CppRunner::HandleDefine, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		parser->addStatement("Include", std::bind(&CppRunner::HandleInclude, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		parser->addStatement("Constructor", std::bind(&CppRunner::HandleConstructor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		parser->addStatement("PackBody", std::bind(&CppRunner::HandlePackBody, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		parser->addStatement("UnpackBody", std::bind(&CppRunner::HandleUnpackBody, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));

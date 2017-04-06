@@ -21,22 +21,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include <CommProto/commproto.h>
+#include <CommProto/serialization/objserialization.h>
 ^Include^
-
 
 namespace ngcp {
 
-  struct ^Name^ : INHERITS_ABSPACKET {
+  struct ^Name^ : INHERITS_OBJSERIALIZABLE {
     /**
     Creates an instance
     */
     ^Constructor^
 
-
     /**
     Pack data into the stream for sending out.
     */
-    void Pack(comnet::ObjectStream &obj) override {
+    void Input(comnet::ObjectStream &obj) override {
       ^PackBody^
     }
 
@@ -44,16 +43,15 @@ namespace ngcp {
     /**
     Unpack data back into this packet when receiving data.
     */
-    void Unpack(comnet::ObjectStream &obj) override {
+    void Output(comnet::ObjectStream &obj) override {
       ^UnpackBody^
     }
-
 
     /**
     Tells CommProtocol how to recreate the ^Name^ packet
     when receiving data.
     */
-    comnet::AbstractPacket *Create() override {
+    comnet::serialization::ObjSerializable* Create() override {
       return new ^CreateConstruct^;
     }
 
