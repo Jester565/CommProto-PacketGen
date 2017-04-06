@@ -375,6 +375,9 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 										std::cerr << "No default argument was put after = or ~" << std::endl;;
 										return false;
 								}
+								if (activeMessage->getIsObj() && activeField->assignmentMode == Field::ASSIGN_MODE_CREATE_CONSTRUCT) {
+									std::cerr << "WARNING: A default constructor (constructor with no parameters) is required. It is recommended that you set all default values for parameters here using the = sign." << std::endl << std::endl;
+								}
 								activeMessage->addField(activeField);
 								activeField = nullptr;
 						}
@@ -393,8 +396,11 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				}
 				else if (word == ";")
 				{
-						activeMessage->addField(activeField);
-						activeField = nullptr;
+					if (activeMessage->getIsObj()) {
+						std::cerr << "WARNING: A default constructor (constructor with no parameters) is required. It is recommended that you set all default values for parameters here using the = sign." << std::endl << std::endl;
+					}
+					activeMessage->addField(activeField);
+					activeField = nullptr;
 				}
 				else
 				{

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include <CommProto/commproto.h>
-#include <CommProto/serialization/objserialization.h>
+#include <CommProto/serialization/objserializable.h>
 ^Include^
 
 namespace ngcp {

@@ -95,16 +95,9 @@ public:
 		{
 			for (uint32_t i = 0; i < msg->getFields().size(); i++)
 			{
-				if (msg->getFields().at(i)->custom) {
-					fileOut << *msg->getFields().at(i)->name;
-					fileOut << ".Input(obj);";
-				}
-				else
-				{
-					fileOut << "obj << ";
-					fileOut << *msg->getFields().at(i)->name;
-					fileOut << ";";
-				}
+				fileOut << "obj << ";
+				fileOut << *msg->getFields().at(i)->name;
+				fileOut << ";";
 				if (i != msg->getFields().size() - 1)
 				{
 					Runner::NewLine(fileOut, space);
@@ -116,16 +109,9 @@ public:
 		{
 			for (int i = msg->getFields().size() - 1; i >= 0; i--)
 			{
-				if (msg->getFields().at(i)->custom) {
-					fileOut << *msg->getFields().at(i)->name;
-					fileOut << ".Output(obj);";
-				}
-				else
-				{
-					fileOut << "obj >> ";
-					fileOut << *msg->getFields().at(i)->name;
-					fileOut << ";";
-				}
+				fileOut << "obj >> ";
+				fileOut << *msg->getFields().at(i)->name;
+				fileOut << ";";
 				if (i != 0)
 				{
 					Runner::NewLine(fileOut, space);

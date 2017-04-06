@@ -25,7 +25,7 @@ namespace NGCP
 
     public override ObjSerializable Create()
     {
-      return new ^CreateConstruct^
+      return new ^CreateConstruct^;
     }
 
     #region Data
@@ -33,3 +33,4 @@ namespace NGCP
     #endregion
   }
 }
+
