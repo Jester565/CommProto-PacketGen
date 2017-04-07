@@ -18,6 +18,10 @@ void TypeMap::addType(const std::string & packGenTypeName, int numBytes, const s
 		types.emplace(std::make_pair(packGenTypeName, type));
 }
 
+void TypeMap::addType(const std::string& key, Type* type) {
+	types.emplace(std::make_pair(key, type));
+}
+
 bool TypeMap::setLangTypeName(const std::string & packGenTypeName, const std::string & langTypeName)
 {
 		auto it = types.find(packGenTypeName);
@@ -37,6 +41,7 @@ bool TypeMap::convertType(Type * typePtr)
 				typePtr->name = it->second->name;
 				typePtr->numBytes = it->second->numBytes;
 				typePtr->defaultVal = it->second->defaultVal;
+				typePtr->parameterUniqueness = it->second->parameterUniqueness;
 				return true;
 		}
 		return false;

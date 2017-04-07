@@ -19,6 +19,7 @@ struct Type
 		std::string name;
 		uint8_t numBytes;
 		std::string defaultVal;
+		std::vector <bool> parameterUniqueness;
 };
 
 struct Field

@@ -13,6 +13,8 @@ public:
 
 		void addType(const std::string& packGenTypeName, int numBytes, const std::string& defaultVal);
 
+		void addType(const std::string& packGenTypeName, Type* type);
+
 		bool setLangTypeName(const std::string& packGenTypeName, const std::string& langTypeName);
 
 		bool convertType(Type* typePtr);

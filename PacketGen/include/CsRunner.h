@@ -4,16 +4,18 @@
 class CsRunner : public Runner
 {
 public:
-	std::string getContainerFunc(std::vector<Type*> subTypes) {
+	std::string getContainerFunc(Field* field) {
+		std::vector <Type*> subTypes = field->subTypes;
+		std::vector <bool> uniqueness = field->type->parameterUniqueness;
 		if (subTypes.size() == 1) {
-			if (!subTypes.at(0)->isPtr) {
+			if (!subTypes.at(0)->isPtr || uniqueness.at(0)){
 				return "Unique";
 			}
 		}
 		else
 		{
 			std::string str;
-			if (subTypes.at(1)->isPtr) {
+			if (subTypes.at(1)->isPtr && !uniqueness.at(1)) {
 				return "UniqueKey";
 			}
 			else
@@ -130,7 +132,7 @@ public:
 					fileOut << ".Input(obj);";
 				}
 				else if (msg->getFields().at(i)->subTypes.size() > 0) {
-					fileOut << "obj.Input" << getContainerFunc(msg->getFields().at(i)->subTypes) << "(";
+					fileOut << "obj.Input" << getContainerFunc(msg->getFields().at(i)) << "(";
 					fileOut << *msg->getFields().at(i)->name;
 					fileOut << ");";
 				}
@@ -159,7 +161,7 @@ public:
 					Field* field = msg->getFields().at(i);
 					fileOut << getICollect(field->subTypes, *field->name);
 					Runner::NewLine(fileOut, space);
-					fileOut << "obj.Output" << getContainerFunc(field->subTypes) << "(";
+					fileOut << "obj.Output" << getContainerFunc(field) << "(";
 					fileOut << "ref iCollect" << *field->name;
 					for (int j = 0; j < field->subTypes.size(); j++) {
 						fileOut << ", new ";

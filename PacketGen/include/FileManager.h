@@ -17,7 +17,7 @@ public:
 		static bool IsFile(const std::string& path)
 		{
 				std::ifstream fileIn(path.c_str());
-				return !fileIn.bad();
+				return !fileIn.fail();
 		}
 };
 

@@ -194,6 +194,7 @@ bool Parser::write(const std::string & msgOutPath, const std::string & templateP
 
 bool Parser::convertTypes(TypeMap * typeMap)
 {
+	static int dog = 1;
 		for (int i = 0; i < messages.size(); i++)
 		{
 				std::vector <Field*>& fields = messages.at(i)->getFields();
@@ -206,16 +207,22 @@ bool Parser::convertTypes(TypeMap * typeMap)
 							std::cerr << typePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
 							return false;
 						}
-						for (int k = 0; k < fields.at(j)->subTypes.size(); k++) {
-							Type* subTypePtr = fields.at(j)->subTypes.at(k);
-							if (!subTypePtr->custom) {
+						if (fields.at(j)->subTypes.size() > 0) {
+							if (fields.at(j)->subTypes.size() != fields.at(j)->type->parameterUniqueness.size()) {
+								std::cerr << typePtr->name << " had invalid number of type arguments. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
+								return false;
+							}
+							for (int k = 0; k < fields.at(j)->subTypes.size(); k++) {
+								Type* subTypePtr = fields.at(j)->subTypes.at(k);
 								if (subTypePtr->name.at(subTypePtr->name.size() - 1) == '*') {
 									subTypePtr->name.pop_back();
 									subTypePtr->isPtr = true;
 								}
-								if (!typeMap->convertType(subTypePtr)) {
-									std::cerr << subTypePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
-									return false;
+								if (!subTypePtr->custom) {
+									if (!typeMap->convertType(subTypePtr)) {
+										std::cerr << subTypePtr->name << " did not match a type. Field \"" << *fields.at(j)->name << "\" in message \"" << messages.at(i)->getName() << "\"" << std::endl;
+										return false;
+									}
 								}
 							}
 						}
