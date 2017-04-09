@@ -6,7 +6,7 @@
 const std::string DiagramRunner::DEFAULT_FILE_ENDING = "png";
 
 DiagramRunner::DiagramRunner(CommandArgumentManager * cmdArgManager)
-		:Runner(cmdArgManager, "")
+		:Runner(cmdArgManager, "", "")
 {
 }
 

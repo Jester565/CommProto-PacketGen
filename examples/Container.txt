@@ -1,0 +1,41 @@
+obj AgeName {
+  int16 num = 1;
+  string str = "can't be found";
+}
+
+message ContainerPack {
+  string str ~ "Val";
+  vector vecNums1<uint8>;
+  vector vecNums2<int8*>;
+  vector vecNums3<#AgeName#>;
+  vector vecNums4<#AgeName*#>;
+  hash_set hashSetNums1<int64>;
+  hash_set hashSetNums2<int64*>;
+  hash_set hashSetNums3<#AgeName*#>;
+  //setNums1
+  set setNums1<uint16>;
+  //setNums2
+  set setNums2<int16*>;
+  //setNums4
+  set setNums4<#AgeName*#>;
+  //llNums1
+  linked_list llNums1<uint32>;
+  //llNums2
+  linked_list llNums2<int32*>;
+  //llNums3
+  linked_list llNums3<#AgeName#>;
+  //llNums4
+  linked_list llNums4<#AgeName*#>;
+  //keyValMap1
+  map keyValMap1<uint64, string>;
+  //keyValMap2
+  map keyValMap2<uint64*, #AgeName#>;
+  //keyValMap3
+  map keyValMap3<uint64, #AgeName*#>;
+  //hashKeyValMap1
+  hash_map hashKeyValMap1<#AgeName*#, #AgeName#>;
+  //hashKeyValMap2
+  hash_map hashKeyValMap2<int64*, #AgeName*#>;
+  
+  #AgeName# ageNameObj;
+}
