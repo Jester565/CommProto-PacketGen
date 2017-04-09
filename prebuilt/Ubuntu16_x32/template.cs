@@ -30,7 +30,7 @@ namespace NGCP
   /**
    * ^Name^ Packet Template. 
    */
-  class ^Name^ : ABSPacket
+  public class ^Name^ : ABSPacket
   {
     ^Constructor^
 
