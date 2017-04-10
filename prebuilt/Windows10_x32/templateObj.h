@@ -48,14 +48,6 @@ namespace ngcp {
     }
 
     /**
-    Tells CommProtocol how to recreate the ^Name^ packet
-    when receiving data.
-    */
-    comnet::serialization::ObjSerializable* Create() override {
-      return new ^CreateConstruct^;
-    }
-
-    /**
     Data.
     */
     ^Data^
