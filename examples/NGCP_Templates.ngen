@@ -198,14 +198,14 @@ message TargetDesignationCommand
 
 message ArmCommand
 {
-  uint8_t id = 0;
+  uint8 id = 0;
   int32_t position = 0;
 }
 
 message ArmPosition
 {
-  int32_t position1;
-  int32_t position2;
-  int32_t position3;
-  int32_t position4;
+  int32 position1;
+  int32 position2;
+  int32 position3;
+  int32 position4;
 }
