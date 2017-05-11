@@ -363,7 +363,11 @@ bool Parser::handleWord(const std::string& word, const std::string& comment)
 				}
 				else if (activeField->name == nullptr)
 				{
-					if (word == "obj" || word == "id") {
+					if (word == "obj" || word == "type_id" || word == "packetName" || word == "unmanaged" ||
+						word == "Create" || word == "GetAbstractPacket" || word == "SetAbstractPacket" ||
+						word == "GetValue" || word == "ABSPacket" || word == "Pack" || word == "Unpack" ||
+						word == "GetPacketName" || word == "AbstractPacket" || word == "GetId") 
+					{
 						std::cout << word << " is not a legal type name. It may already be reserved for a parameter or field" << std::endl;
 						return false;
 					}

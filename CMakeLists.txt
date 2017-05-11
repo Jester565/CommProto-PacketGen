@@ -43,6 +43,8 @@ configure_file(${TEMPLATE_DIR}/templateObj.cs templateObj.cs COPYONLY)
 set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PacketGen/include/)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PacketGen/src/)
 
+include_directories(SYSTEM PacketGen/include/)
+
 set(PACKETGEN_HEADERS
   ${HEADER_DIR}/CommandArgument.h
 	${HEADER_DIR}/CommandArgumentManager.h

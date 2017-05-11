@@ -195,3 +195,17 @@ message TargetDesignationCommand
   //meters
   float altitude = 0;
 }
+
+message ArmCommand
+{
+  uint8_t id = 0;
+  int32_t position = 0;
+}
+
+message ArmPosition
+{
+  int32_t position1;
+  int32_t position2;
+  int32_t position3;
+  int32_t position4;
+}
